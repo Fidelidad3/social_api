@@ -1,2 +1,4 @@
 /vendor
 .env
+/behat/features/users.txt
+.idea
