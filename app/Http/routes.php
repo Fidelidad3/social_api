@@ -22,3 +22,5 @@ $app->delete('/users/{id:\d+}', 'UserController@removeUser');
 
 // add user to friends (send friend request)
 $app->post('/users/{id:\d+}/requests',        'RelationController@sendFriendRequest');
+// reject friend request
+$app->delete('/users/{id:\d+}/requests/{userid:\d+}',      'RelationController@rejectFriendRequest');
