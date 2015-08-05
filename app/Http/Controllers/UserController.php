@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
-
+/**
+ * Class UserController
+ * @package App\Http\Controllers
+ */
 class UserController extends BaseController
 {
     /**
@@ -15,6 +18,9 @@ class UserController extends BaseController
      */
     private $_neo4j;
 
+    /**
+     * @param Neo4j $neo4j
+     */
     public function __construct(Neo4j $neo4j = null)
     {
         $this->_neo4j = is_null($neo4j) ? new Neo4j() : $neo4j;

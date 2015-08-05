@@ -19,3 +19,6 @@ $app->get('/users',             'UserController@listUsers');
 $app->get('/users/{id:\d+}',    'UserController@getUser');
 $app->post('/users',            'UserController@createUser');
 $app->delete('/users/{id:\d+}', 'UserController@removeUser');
+
+// add user to friends (send friend request)
+$app->post('/users/{id:\d+}/requests',        'RelationController@sendFriendRequest');
