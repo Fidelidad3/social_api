@@ -9,6 +9,11 @@ use App\Services\Neo4j;
  */
 class Node
 {
+    const QUERY_TEMPLATE_FRIEND_REQUESTS = "START current=node({id}) MATCH user-[:PENDING]->current RETURN user";
+    const QUERY_TEMPLATE_GET_USER_FRIENDS = "START current=node({userId}) MATCH current-[:FRIENDS]->user RETURN user";
+    const QUERY_TEMPLATE_GET_ALL_USERS = "MATCH (user) RETURN user";
+    const QUERY_TEMPLATE_GET_USERS_BY_CIRCLE = "START current=node({id}) MATCH ps = (current-[:FRIENDS*{depth}]->user) MATCH p = allShortestPaths(current-[r:FRIENDS*..{depth}]->user) WHERE length(p) = {depth} RETURN user";
+
     /**
      * @var Neo4j
      */
@@ -42,7 +47,12 @@ class Node
      */
     public function getFriendRequestUserList($id)
     {
-        $queryTemplate = "START current=node({$id}) MATCH user-[:PENDING]->current RETURN user";
+        $queryTemplate = strtr(
+             self::QUERY_TEMPLATE_FRIEND_REQUESTS,
+             array(
+                '{id}' => $id
+             )
+         );
         return $this->_userListQuery($queryTemplate);
     }
 
@@ -54,7 +64,12 @@ class Node
      */
     public function getUserFriendList($userId)
     {
-        $queryTemplate = "START current=node({$userId}) MATCH current-[:FRIENDS]->user RETURN user";
+        $queryTemplate = strtr(
+            self::QUERY_TEMPLATE_GET_USER_FRIENDS,
+            array(
+                '{userId}' => $userId
+            )
+        );
         return $this->_userListQuery($queryTemplate);
     }
 
@@ -67,7 +82,13 @@ class Node
      */
     public function getUserListFromCircle($id, $depth)
     {
-        $queryTemplate = "START current=node({$id}) MATCH ps = (current-[:FRIENDS*{$depth}]->user) MATCH p = allShortestPaths(current-[r:FRIENDS*..{$depth}]->user) WHERE length(p) = {$depth} RETURN user";
+        $queryTemplate = strtr(
+            self::QUERY_TEMPLATE_GET_USERS_BY_CIRCLE,
+            array(
+                '{id}' => $id,
+                '{depth}' => $depth,
+            )
+        );
         return $this->_userListQuery($queryTemplate);
     }
 
@@ -78,8 +99,7 @@ class Node
      */
     public function getAllUsersList()
     {
-        $queryTemplate = "MATCH (user) RETURN user";
-        return $this->_userListQuery($queryTemplate);
+        return $this->_userListQuery(self::QUERY_TEMPLATE_GET_ALL_USERS);
     }
 
     /**
@@ -93,7 +113,9 @@ class Node
         $resultSet = $this->_neo4j->query($queryTemplate);
         $result = array();
         foreach ($resultSet as $node) {
-            $result[$node['user']->getId()] = $node['user']->getProperty('name');
+            $userId = $node['user']->getId();
+            $userName = $node['user']->getProperty('name');
+            $result[$userId] = $userName;
         }
         return $result;
     }
