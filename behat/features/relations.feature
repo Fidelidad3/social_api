@@ -34,7 +34,7 @@ Feature: Testing user relations in social REST services
     Then the response status code should be 200
 
   Scenario: Get user friend list
-    Given that I want to find an friends request
+    Given that I want to find a user friends
     When I request "/users/{4}/friends"
     Then the response status code should be 200
     And the response is JSON
@@ -43,4 +43,15 @@ Feature: Testing user relations in social REST services
       | George Abbot             |
       | J. R. Ackerley           |
       | Gilbert Abbott a Beckett |
+      | Paul Ableman             |
+
+  Scenario: Get user friend list from circle
+    Given that I want to find a user friends list from circle
+    When I request "/users/{1}/circles/3"
+    Then the response status code should be 200
+    And the response is JSON
+    And the response should be:
+      | name                     |
+      | George Abbot             |
+      | J. R. Ackerley           |
       | Paul Ableman             |

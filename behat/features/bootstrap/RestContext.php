@@ -86,7 +86,7 @@ class RestContext extends BehatContext
     }
 
     /**
-     * @Given /^that I want to ((find|look for) an?|check) /
+     * @Given /^that I want to ((find|look for) an?|a?|check) /
      * @return void
      */
     public function thatIWantToFind()

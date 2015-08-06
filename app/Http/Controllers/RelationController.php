@@ -61,12 +61,12 @@ class RelationController extends BaseController
      * Reject friend request from user with userid to user with id.
      *
      * @param string $id
-     * @param string $userid
+     * @param string $userId
      * @return Response
      */
-    public function rejectFriendRequest($id, $userid)
+    public function rejectFriendRequest($id, $userId)
     {
-        $relationship = $this->_relationRepository->getPendingRelation($id, $userid);
+        $relationship = $this->_relationRepository->getPendingRelation($id, $userId);
         $this->_relationService->rejectFriendRequest($relationship);
         return new Response('', Response::HTTP_NO_CONTENT);
     }
@@ -95,16 +95,5 @@ class RelationController extends BaseController
         $relationship = $this->_relationRepository->getPendingRelation($id, $userId);
         $this->_relationService->approveFriendRequest($relationship);
         return new Response('', Response::HTTP_OK);
-    }
-
-    /**
-     * Get list of user friends.
-     *
-     * @param $id
-     * @return Response
-     */
-    public function getFriendList($id)
-    {
-        return new Response($this->_nodeRepository->getUserFriendList($id), Response::HTTP_OK);
     }
 }

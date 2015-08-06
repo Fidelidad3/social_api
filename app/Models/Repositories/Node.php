@@ -43,13 +43,7 @@ class Node
     public function getFriendRequestUserList($id)
     {
         $queryTemplate = "START current=node({$id}) MATCH user-[:PENDING]->current RETURN user";
-        $resultSet = $this->_neo4j->query($queryTemplate);
-
-        $result = array();
-        foreach ($resultSet as $row) {
-            $result[$row['user']->getId()] = $row['user']->getProperty('name');
-        }
-        return $result;
+        return $this->_userListQuery($queryTemplate);
     }
 
     /**
@@ -60,11 +54,35 @@ class Node
      */
     public function getUserFriendList($userId)
     {
-        $queryTemplate = "START user=node({$userId}) MATCH user-[:FRIENDS]->friend RETURN friend";
+        $queryTemplate = "START current=node({$userId}) MATCH current-[:FRIENDS]->user RETURN user";
+        return $this->_userListQuery($queryTemplate);
+    }
+
+    /**
+     * Get user list from circle with selected depth.
+     *
+     * @param int $id    User id.
+     * @param int $depth Circle depth.
+     * @return array
+     */
+    public function getUserListFromCircle($id, $depth)
+    {
+        $queryTemplate = "START current=node({$id}) MATCH ps = (current-[:FRIENDS*{$depth}]->user) MATCH p = allShortestPaths(current-[r:FRIENDS*..{$depth}]->user) WHERE length(p) = {$depth} RETURN user";
+        return $this->_userListQuery($queryTemplate);
+    }
+
+    /**
+     * Return user list [id -> name] from request.
+     *
+     * @param string $queryTemplate Query template for neo4j request.
+     * @return array
+     */
+    private function _userListQuery($queryTemplate)
+    {
         $resultSet = $this->_neo4j->query($queryTemplate);
         $result = array();
         foreach ($resultSet as $node) {
-            $result[$node['friend']->getId()] = $node['friend']->getProperty('name');
+            $result[$node['user']->getId()] = $node['user']->getProperty('name');
         }
         return $result;
     }
