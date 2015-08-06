@@ -21,9 +21,9 @@ class UserController extends BaseController
     /**
      * @param Neo4j $neo4j
      */
-    public function __construct(Neo4j $neo4j = null)
+    public function __construct(Neo4j $neo4j)
     {
-        $this->_neo4j = is_null($neo4j) ? new Neo4j() : $neo4j;
+        $this->_neo4j = $neo4j;
     }
 
     /**

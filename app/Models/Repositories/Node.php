@@ -23,9 +23,10 @@ class Node
     }
 
     /**
+     * Get node by id.
+     *
      * @param $id
      * @return \Everyman\Neo4j\Node
-     * @throws Exception
      * @throws \Everyman\Neo4j\Exception
      */
     public function getNodeById($id)

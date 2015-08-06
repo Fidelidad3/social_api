@@ -32,17 +32,19 @@ class RelationController extends BaseController
      * @param Services\Relations $relationService
      */
     public function __construct(
-        Repositories\Node $nodeRepository = null,
-        Repositories\Relations $relationRepository = null,
-        Services\Relations $relationService = null
+        Repositories\Node $nodeRepository,
+        Repositories\Relations $relationRepository,
+        Services\Relations $relationService
     )
     {
-        $this->_nodeRepository = is_null($nodeRepository) ? new Repositories\Node() : $nodeRepository;
-        $this->_relationRepository = is_null($relationRepository) ? new Repositories\Relations() : $relationRepository;
-        $this->_relationService = is_null($relationService) ? new Services\Relations() : $relationService;
+        $this->_nodeRepository = $nodeRepository;
+        $this->_relationRepository = $relationRepository;
+        $this->_relationService = $relationService;
     }
 
     /**
+     * Action for sending friend request.
+     *
      * @param Request $request
      * @param $id
      * @return Response
