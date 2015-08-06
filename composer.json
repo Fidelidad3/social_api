@@ -13,7 +13,8 @@
         "phpunit/phpunit": "~4.3",
         "fzaninotto/faker": "~1.0",
         "everyman/neo4jphp": "dev-master",
-        "deminy/behat-rest-testing": "@dev"
+        "deminy/behat-rest-testing": "@dev",
+        "mockery/mockery": "dev-master"
     },
     "autoload": {
         "psr-4": {

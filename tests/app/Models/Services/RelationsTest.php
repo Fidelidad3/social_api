@@ -1,36 +1,40 @@
 <?php
 
 use App\Models\Services\Relations;
+use Mockery as m;
 
 class RelationsTest extends PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        m::close();
+    }
+
     public function testRejectFriendRequest()
     {
-        $endNode = $this->getMock('Everyman\Neo4j\Node', array(), array(), '', false);
-        $rejectRelationship = $this->getMock('Everyman\Neo4j\Relationship', array(), array(), '', false);
-        $rejectRelationship->expects($this->once())
-            ->method('save');
+        $endNode = m::mock('Everyman\Neo4j\Node');
 
-        $startNode = $this->getMock('Everyman\Neo4j\Node', array('relateTo'), array(), '', false);
-        $startNode->expects($this->once())
-            ->method('relateTo')
+        $rejectRelationship = m::mock('Everyman\Neo4j\Relationship');
+        $rejectRelationship->shouldReceive('save')
+            ->once();
+
+        $startNode = m::mock('Everyman\Neo4j\Node');
+        $startNode->shouldReceive('relateTo')
+            ->once()
             ->with($endNode, 'REJECTED')
-            ->will($this->returnValue($rejectRelationship));
+            ->andReturn($rejectRelationship);
 
-        $relationship = $this->getMock('Everyman\Neo4j\Relationship', array('getStartNode', 'getEndNode', 'delete'), array(), '', false);
-        $relationship->expects($this->once())
-            ->method('getStartNode')
-            ->will($this->returnValue($startNode));
-
-        $relationship->expects($this->once())
-            ->method('getEndNode')
-            ->will($this->returnValue($endNode));
-
-        $relationship->expects($this->once())
-            ->method('delete');
+        $relationship = m::mock('Everyman\Neo4j\Relationship');
+        $relationship->shouldReceive('getStartNode')
+            ->once()
+            ->andReturn($startNode);
+        $relationship->shouldReceive('getEndNode')
+            ->once()
+            ->andReturn($endNode);
+        $relationship->shouldReceive('delete')
+            ->once();
 
         $relationService = new Relations();
-
         $relationService->rejectFriendRequest($relationship);
     }
 }
