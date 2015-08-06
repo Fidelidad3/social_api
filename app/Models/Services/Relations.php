@@ -15,7 +15,7 @@ class Relations
     {
         $startNode = $relationship->getStartNode();
         $endNode = $relationship->getEndNode();
-        $endNode->relateTo($startNode, 'REJECTED')->save();
+        $startNode->relateTo($endNode, 'REJECTED')->save();
         $relationship->delete();
     }
 }

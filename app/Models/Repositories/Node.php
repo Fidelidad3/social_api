@@ -32,4 +32,22 @@ class Node
     {
         return $this->_neo4j->getClient()->getNode($id);
     }
+
+    /**
+     * Get list with request ti friend.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getFriendRequestUserList($id)
+    {
+        $queryTemplate = "START current=node({$id}) MATCH user-[:PENDING]->current RETURN user";
+        $resultSet = $this->_neo4j->query($queryTemplate);
+
+        $result = array();
+        foreach ($resultSet as $row) {
+            $result[$row['user']->getId()] = $row['user']->getProperty('name');
+        }
+        return $result;
+    }
 }

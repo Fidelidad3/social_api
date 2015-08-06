@@ -24,3 +24,6 @@ $app->delete('/users/{id:\d+}', 'UserController@removeUser');
 $app->post('/users/{id:\d+}/requests',        'RelationController@sendFriendRequest');
 // reject friend request
 $app->delete('/users/{id:\d+}/requests/{userid:\d+}',      'RelationController@rejectFriendRequest');
+
+// get user list with friend request
+$app->get('/users/{id:\d+}/requests',         'RelationController@getFriendRequestUsers');

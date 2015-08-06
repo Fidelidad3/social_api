@@ -68,4 +68,15 @@ class RelationController extends BaseController
         $this->_relationService->rejectFriendRequest($relationship);
         return new Response('', Response::HTTP_NO_CONTENT);
     }
+
+    /**
+     * Get list user with friend request.
+     *
+     * @param $id
+     * @return Response
+     */
+    public function getFriendRequestUsers($id)
+    {
+        return new Response($this->_nodeRepository->getFriendRequestUserList($id), Response::HTTP_OK);
+    }
 }
