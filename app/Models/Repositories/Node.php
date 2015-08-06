@@ -72,6 +72,17 @@ class Node
     }
 
     /**
+     * Get list of all users.
+     *
+     * @return array
+     */
+    public function getAllUsersList()
+    {
+        $queryTemplate = "MATCH (user) RETURN user";
+        return $this->_userListQuery($queryTemplate);
+    }
+
+    /**
      * Return user list [id -> name] from request.
      *
      * @param string $queryTemplate Query template for neo4j request.

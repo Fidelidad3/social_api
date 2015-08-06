@@ -26,7 +26,7 @@ class FriendsController extends BaseController
     }
 
     /**
-     * Get list of user friends.
+     * Get user friends list.
      *
      * @param string $id
      * @return Response
@@ -37,6 +37,8 @@ class FriendsController extends BaseController
     }
 
     /**
+     *  Get user list from circle with selected depth.
+     *
      * @param string $id          Root user Id.
      * @param string $circleDepth Depth of friends circle.
      * @return Response

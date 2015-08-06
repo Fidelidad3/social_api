@@ -6,6 +6,7 @@ use App\Services\Neo4j;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\Repositories\Node;
 
 /**
  * Class UserController
@@ -19,11 +20,18 @@ class UserController extends BaseController
     private $_neo4j;
 
     /**
-     * @param Neo4j $neo4j
+     * @var Node
      */
-    public function __construct(Neo4j $neo4j)
+    private $_nodeRepository;
+
+    /**
+     * @param Neo4j $neo4j
+     * @param Node  $nodeRepository
+     */
+    public function __construct(Neo4j $neo4j, Node $nodeRepository)
     {
         $this->_neo4j = $neo4j;
+        $this->_nodeRepository = $nodeRepository;
     }
 
     /**

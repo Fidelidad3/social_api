@@ -6,6 +6,10 @@ use App\Services\DatabaseCreator;
 use Illuminate\Http\Response;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+/**
+ * Class Controller
+ * @package App\Http\Controllers
+ */
 class Controller extends BaseController
 {
     /**
@@ -27,6 +31,6 @@ class Controller extends BaseController
     public function init()
     {
         $this->_databaseCreator->init();
-        return new Response('Database init completed.', Response::HTTP_OK);
+        return new Response('Database initialization completed.', Response::HTTP_OK);
     }
 }
