@@ -58,13 +58,7 @@ class UserController extends BaseController
      */
     public function listUsers()
     {
-        $queryTemplate = "MATCH (user) RETURN user";
-        $resultSet = $this->_neo4j->query($queryTemplate);
-        $result = array();
-        foreach ($resultSet as $row) {
-            $result[$row['user']->getId()] = $row['user']->getProperty('name');
-        }
-        return new Response($result, Response::HTTP_OK);
+        return new Response($this->_nodeRepository->getAllUsersList(), Response::HTTP_OK);
     }
 
     /**
