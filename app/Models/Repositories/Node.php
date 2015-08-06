@@ -51,4 +51,21 @@ class Node
         }
         return $result;
     }
+
+    /**
+     * Get user friend list
+     *
+     * @param $userId
+     * @return array
+     */
+    public function getUserFriendList($userId)
+    {
+        $queryTemplate = "START user=node({$userId}) MATCH user-[:FRIENDS]->friend RETURN friend";
+        $resultSet = $this->_neo4j->query($queryTemplate);
+        $result = array();
+        foreach ($resultSet as $node) {
+            $result[$node['friend']->getId()] = $node['friend']->getProperty('name');
+        }
+        return $result;
+    }
 }

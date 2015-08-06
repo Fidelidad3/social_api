@@ -29,3 +29,5 @@ $app->delete('/users/{id:\d+}/requests/{userid:\d+}', 'RelationController@reject
 $app->get('/users/{id:\d+}/requests',                 'RelationController@getFriendRequestUsers');
 // approve friend request
 $app->put('/users/{id:\d+}/requests',                 'RelationController@approveFriendRequest');
+// get own friend list
+$app->get('/users/{id:\d+}/friends',                  'RelationController@getFriendList');
