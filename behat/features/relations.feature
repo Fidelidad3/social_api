@@ -26,3 +26,9 @@ Feature: Testing user relations in social REST services
     Given that I want to reject a friend
     When I request "/users/{5}/requests/{6}"
     Then the response status code should be 204
+
+  Scenario: Approving friend request
+    Given that I want to approve a new friend
+    And that userId of the user is "{4}"
+    When I request "/users/{5}/requests"
+    Then the response status code should be 200

@@ -81,4 +81,19 @@ class RelationController extends BaseController
     {
         return new Response($this->_nodeRepository->getFriendRequestUserList($id), Response::HTTP_OK);
     }
+
+    /**
+     * Approve friend request
+     *
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function approveFriendRequest(Request $request, $id)
+    {
+        $userId = $request->get('userid');
+        $relationship = $this->_relationRepository->getPendingRelation($id, $userId);
+        $this->_relationService->approveFriendRequest($relationship);
+        return new Response('', Response::HTTP_OK);
+    }
 }

@@ -18,4 +18,18 @@ class Relations
         $startNode->relateTo($endNode, 'REJECTED')->save();
         $relationship->delete();
     }
+
+    /**
+     * Approve friend request.
+     *
+     * @param Relationship $relationship
+     */
+    public function approveFriendRequest(Relationship $relationship)
+    {
+        $startNode = $relationship->getStartNode();
+        $endNode = $relationship->getEndNode();
+        $relationship->delete();
+        $startNode->relateTo($endNode, 'FRIENDS')->save();
+        $endNode->relateTo($startNode, 'FRIENDS')->save();
+    }
 }
